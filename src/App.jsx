@@ -1,19 +1,28 @@
-import { useEffect } from "react"
+import { useState } from "react"
 import socket from "./socket"
+import JoinRoom from "./Components/JoinRoom/JoinRoom"
+import Room from "./Pages/Room/Room"
 
 function App() {
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected:", socket.id)
-    })
-  }, [])
+  const [joined, setJoined] = useState(false)
+  const [roomId, setRoomId] = useState("")
+  const [username, setUsername] = useState("")
 
-  return (
-    <div>
-      <h1>YouTube Watch Party</h1>
-    </div>
-  )
+  const handleJoin = ({ username, roomId }) => {
+
+    socket.emit("join_room", { username, roomId })
+
+    setUsername(username)
+    setRoomId(roomId)
+    setJoined(true)
+  }
+
+  if (!joined) {
+    return <JoinRoom onJoin={handleJoin} />
+  }
+
+  return <Room roomId={roomId} username={username} />
 }
 
 export default App
