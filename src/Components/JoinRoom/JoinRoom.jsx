@@ -7,32 +7,34 @@ function JoinRoom({ onJoin }) {
   const [roomId, setRoomId] = useState("")
 
   const handleJoin = () => {
-
     if (!username || !roomId) return
-
     onJoin({ username, roomId })
   }
 
   return (
-    <div>
+    <div className="join-container">
 
-      <h2>Join Watch Party</h2>
+      <div className="join-card">
 
-      <input
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        <h2>Watch Party</h2>
 
-      <input
-        placeholder="Room ID"
-        value={roomId}
-        onChange={(e) => setRoomId(e.target.value)}
-      />
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-      <button onClick={handleJoin}>
-        Join Room
-      </button>
+        <input
+          placeholder="Room ID"
+          value={roomId}
+          onChange={(e) => setRoomId(e.target.value)}
+        />
+
+        <button onClick={handleJoin}>
+          Join Room
+        </button>
+
+      </div>
 
     </div>
   )

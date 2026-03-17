@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import YouTube from "react-youtube"
 import socket from "../../socket"
-import "./VideoPlayer.css"
 
-function VideoPlayer({ roomId }) {
+function VideoPlayer({ roomId, role }) {
 
   const playerRef = useRef(null)
-  const [videoId, setVideoId] = useState("dQw4w9WgXcQ")
+  const [videoId, setVideoId] = useState("")
 
   const opts = {
-    width: "900",
-    height: "500",
     playerVars: {
       autoplay: 0,
       controls: 0,
@@ -24,78 +21,81 @@ function VideoPlayer({ roomId }) {
 
   useEffect(() => {
 
-    const handlePlay = () => {
-      if (playerRef.current) {
-        playerRef.current.playVideo()
-      }
-    }
+    socket.on("play", () => {
+      playerRef.current?.playVideo()
+    })
 
-    const handlePause = () => {
-      if (playerRef.current) {
-        playerRef.current.pauseVideo()
-      }
-    }
+    socket.on("pause", () => {
+      playerRef.current?.pauseVideo()
+    })
 
-    const handleSeek = ({ time }) => {
-      if (playerRef.current) {
-        playerRef.current.seekTo(time)
-      }
-    }
+    socket.on("seek", ({ time }) => {
+      playerRef.current?.seekTo(time)
+    })
 
-    const handleChangeVideo = ({ videoId }) => {
+    socket.on("change_video", ({ videoId }) => {
+
+      console.log("video received:", videoId)
+
       setVideoId(videoId)
 
       if (playerRef.current) {
         playerRef.current.loadVideoById(videoId)
       }
-    }
 
-    const handleSyncState = ({ videoId, playState, currentTime }) => {
+    })
 
-      if (!playerRef.current) return
+    socket.on("sync_state", ({ videoId, playState, currentTime }) => {
 
       if (videoId) {
         setVideoId(videoId)
-        playerRef.current.loadVideoById(videoId)
+        playerRef.current?.loadVideoById(videoId)
       }
 
       if (currentTime) {
-        playerRef.current.seekTo(currentTime)
+        playerRef.current?.seekTo(currentTime)
       }
 
       if (playState === "play") {
-        playerRef.current.playVideo()
+        playerRef.current?.playVideo()
       }
 
       if (playState === "pause") {
-        playerRef.current.pauseVideo()
+        playerRef.current?.pauseVideo()
       }
-    }
 
-    socket.on("play", handlePlay)
-    socket.on("pause", handlePause)
-    socket.on("seek", handleSeek)
-    socket.on("change_video", handleChangeVideo)
-    socket.on("sync_state", handleSyncState)
-
-    return () => {
-      socket.off("play", handlePlay)
-      socket.off("pause", handlePause)
-      socket.off("seek", handleSeek)
-      socket.off("change_video", handleChangeVideo)
-      socket.off("sync_state", handleSyncState)
-    }
+    })
 
   }, [])
 
   return (
-    <div className="video-container">
-      <YouTube
-        videoId={videoId}
-        opts={opts}
-        onReady={onReady}
-      />
+
+    <div
+      className="video-container"
+      style={{
+        pointerEvents:
+          role === "host" || role === "moderator"
+            ? "auto"
+            : "none"
+      }}
+    >
+
+      {videoId ? (
+
+        <YouTube
+          videoId={videoId}
+          opts={opts}
+          onReady={onReady}
+        />
+
+      ) : (
+
+        <p>No video loaded</p>
+
+      )}
+
     </div>
+
   )
 }
 

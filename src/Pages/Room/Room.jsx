@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import socket from "../../socket"
+
 import VideoPlayer from "../../Components/VideoPlayer/VideoPlayer"
 import Controls from "../../Components/Controls/Controls"
-import "./Room.css"
+import Participants from "../../Components/Participants/Participants"
 
 function Room({ roomId, username }) {
 
@@ -15,9 +16,7 @@ function Room({ roomId, username }) {
 
       setParticipants(users)
 
-      const currentUser = users.find(
-        (user) => user.username === username
-      )
+      const currentUser = users.find(u => u.username === username)
 
       if (currentUser) {
         setRole(currentUser.role)
@@ -25,36 +24,43 @@ function Room({ roomId, username }) {
 
     })
 
+    socket.on("permission_denied", (data) => {
+      alert(data.message)
+    })
+
+    socket.on("removed_from_room", () => {
+      alert("You were removed from the room")
+      window.location.reload()
+    })
+
+    return () => {
+      socket.off("participants_update")
+      socket.off("permission_denied")
+      socket.off("removed_from_room")
+    }
+
   }, [])
 
   return (
-    <div className="room-container">
 
-      <div className="video-section">
+    <div>
 
-        <VideoPlayer roomId={roomId} />
+      <h2>Room: {roomId}</h2>
 
-        {(role === "host" || role === "moderator") && (
-          <Controls roomId={roomId} />
-        )}
+      <VideoPlayer roomId={roomId} role={role} />
 
-      </div>
+      {(role === "host" || role === "moderator") &&
+        <Controls roomId={roomId} />
+      }
 
-      <div className="participants-section">
-
-        <h3>Participants</h3>
-
-        <ul>
-          {participants.map((p) => (
-            <li key={p.id}>
-              {p.role === "host" ? <strong>{p.username}</strong> : p.username} ({p.role})
-            </li>
-          ))}
-        </ul>
-
-      </div>
+      <Participants
+        participants={participants}
+        role={role}
+        roomId={roomId}
+      />
 
     </div>
+
   )
 }
 
