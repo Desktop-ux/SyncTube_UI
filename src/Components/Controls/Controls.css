@@ -1,0 +1,20 @@
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.controls input{
+  width:350px;
+  padding:10px;
+  border:none;
+  outline:none;
+}
+
+.controls button{
+  padding:10px 16px;
+  background:#ff3b3b;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
