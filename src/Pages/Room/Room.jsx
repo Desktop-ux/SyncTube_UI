@@ -43,7 +43,19 @@ function Room({ roomId, username }) {
 
   }, [])
 
-  const leaveRoom = () => {
+  useEffect(() => {
+
+    socket.emit("join_room", {
+      roomId,
+      username
+    })
+
+  }, [])
+
+ const leaveRoom = () => {
+
+  localStorage.removeItem("watchparty_username")
+  localStorage.removeItem("watchparty_roomId")
 
   socket.disconnect()
 
