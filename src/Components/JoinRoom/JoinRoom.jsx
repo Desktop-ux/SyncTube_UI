@@ -12,31 +12,54 @@ function JoinRoom({ onJoin }) {
   }
 
   return (
-    <div className="join-container">
 
-      <div className="join-card">
+    <div className="landing">
 
-        <h2>Watch Party</h2>
+      <div className="landing-center">
 
-        <input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <div className="logo">
+          🎬
+        </div>
 
-        <input
-          placeholder="Room ID"
-          value={roomId}
-          onChange={(e) => setRoomId(e.target.value)}
-        />
+        <h1 className="title">
+          watch<span>party</span>
+        </h1>
 
-        <button onClick={handleJoin}>
-          Join Room
-        </button>
+        <p className="subtitle">
+          Watch YouTube videos in sync with friends
+        </p>
+
+        <div className="card">
+
+          <label>YOUR NAME</label>
+
+          <input
+            placeholder="Enter username"
+            value={username}
+            onChange={(e)=>setUsername(e.target.value)}
+          />
+
+          <label>ROOM ID</label>
+
+          <input
+            placeholder="Enter room ID"
+            value={roomId}
+            onChange={(e)=>setRoomId(e.target.value)}
+          />
+
+          <button
+            className="join-btn"
+            onClick={handleJoin}
+          >
+            Join Room
+          </button>
+
+        </div>
 
       </div>
 
     </div>
+
   )
 }
 

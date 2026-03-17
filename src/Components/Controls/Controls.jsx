@@ -1,5 +1,6 @@
 import { useState } from "react"
 import socket from "../../socket"
+import "./Controls.css"
 
 function Controls({ roomId }) {
 
@@ -32,23 +33,32 @@ function Controls({ roomId }) {
       videoId
     })
 
+    setUrl("")
   }
 
   return (
 
-    <div>
+    <div className="controls">
 
-      <button onClick={play}>Play</button>
+      <button className="play-btn" onClick={play}>
+        ▶
+      </button>
 
-      <button onClick={pause}>Pause</button>
+      <button className="pause-btn" onClick={pause}>
+        ⏸
+      </button>
 
       <input
-        placeholder="Paste YouTube URL"
+        className="url-input"
+        placeholder="YouTube URL or video ID..."
         value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        onChange={(e)=>setUrl(e.target.value)}
       />
 
-      <button onClick={changeVideo}>
+      <button
+        className="load-btn"
+        onClick={changeVideo}
+      >
         Load Video
       </button>
 

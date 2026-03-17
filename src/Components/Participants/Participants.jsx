@@ -1,4 +1,5 @@
 import socket from "../../socket"
+import "./Participants.css"
 
 function Participants({ participants = [], role, roomId }) {
 
@@ -23,33 +24,63 @@ function Participants({ participants = [], role, roomId }) {
 
   return (
 
-    <div>
+    <div className="participants">
 
-      <h3>Participants</h3>
+      <div className="participants-header">
+        Participants
+        <span className="count">{participants.length}</span>
+      </div>
 
-      {participants.map(p => (
+      <div className="participants-list">
 
-        <div key={p.id}>
+        {participants.map(p => (
 
-          {p.username} ({p.role})
+          <div className="participant" key={p.id}>
 
-          {role === "host" && p.role === "participant" && (
+            <div className="avatar">
+              {p.username.charAt(0).toUpperCase()}
+            </div>
 
-            <>
-              <button onClick={() => makeModerator(p.id)}>
-                Make Moderator
-              </button>
+            <div className="user-info">
 
-              <button onClick={() => removeUser(p.id)}>
-                Remove
-              </button>
-            </>
+              <div className="username">
+                {p.username}
+              </div>
 
-          )}
+              <div className="role">
+                {p.role}
+              </div>
 
-        </div>
+            </div>
 
-      ))}
+
+            {role === "host" && p.role === "participant" && (
+
+              <div className="actions">
+
+                <button
+                  onClick={() => makeModerator(p.id)}
+                  className="mod-btn"
+                >
+                  Mod
+                </button>
+
+                <button
+                  onClick={() => removeUser(p.id)}
+                  className="remove-btn"
+                >
+                  Kick
+                </button>
+
+              </div>
+
+            )}
+
+          </div>
+
+        ))}
+
+      </div>
 
     </div>
 

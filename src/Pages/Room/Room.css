@@ -1,48 +1,93 @@
 .room{
-  height:100vh;
-  background:#0b0c10;
-  color:white;
-  display:flex;
-  flex-direction:column;
+height:100vh;
+display:flex;
+flex-direction:column;
+background:#070b16;
+color:white;
 }
 
-.navbar{
-  height:60px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 20px;
-  border-bottom:1px solid #222;
+/* HEADER */
+
+.room-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 30px;
+background:#0c1020;
+border-bottom:1px solid rgba(255,255,255,.05);
 }
 
-.navbar span{
-  color:#ff3b3b;
+.logo{
+font-size:20px;
+font-weight:700;
+}
+
+.logo span{
+color:#ff3b3b;
 }
 
 .room-code{
-  background:#16181f;
-  padding:6px 12px;
-  border-radius:6px;
-  font-size:14px;
+background:#151a2d;
+padding:6px 14px;
+border-radius:8px;
+font-size:14px;
 }
 
-.main{
-  flex:1;
-  display:flex;
+.room-actions{
+display:flex;
+align-items:center;
+gap:10px;
 }
 
-.video-area{
-  flex:3;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+.role-badge{
+background:#ff3b3b22;
+padding:5px 10px;
+border-radius:8px;
 }
+
+.leave-btn{
+background:#151a2d;
+border:none;
+color:white;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* MAIN */
+
+.room-main{
+flex:1;
+display:flex;
+}
+
+/* VIDEO */
+
+.video-section{
+flex:3;
+background:rgb(3, 9, 20);
+display:flex;
+align-items:center;
+justify-content:center;
+width: min-content;
+height: min-content;
+overflow:hidden;
+padding: 0.5rem;
+}
+
+/* SIDEBAR */
 
 .sidebar{
-  flex:1;
-  background:#11131a;
-  border-left:1px solid #222;
-  display:flex;
-  flex-direction:column;
+flex:1;
+background:#0c1020;
+border-left:1px solid rgba(255,255,255,.05);
+padding:15px;
+}
+
+/* CONTROLS */
+
+.controls-bar{
+padding:12px 20px;
+background:#0c1020;
+border-top:1px solid rgba(255,255,255,.05);
 }

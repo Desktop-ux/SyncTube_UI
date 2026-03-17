@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import YouTube from "react-youtube"
 import socket from "../../socket"
+import "./VideoPlayer.css"
 
 function VideoPlayer({ roomId, role }) {
 
@@ -8,10 +9,14 @@ function VideoPlayer({ roomId, role }) {
   const [videoId, setVideoId] = useState("")
 
   const opts = {
+    width: "100%",
+    height: "100%",
     playerVars: {
       autoplay: 0,
       controls: 0,
-      disablekb: 1
+      disablekb: 1,
+      modestbranding: 1,
+      rel: 0
     }
   }
 
@@ -67,6 +72,23 @@ function VideoPlayer({ roomId, role }) {
     })
 
   }, [])
+  const onStateChange = (event) => {
+
+  if (!playerRef.current) return
+
+  const state = event.data
+
+  if (role !== "host" && role !== "moderator") return
+
+  if (state === 1) { // playing
+    socket.emit("play", { roomId })
+  }
+
+  if (state === 2) { // paused
+    socket.emit("pause", { roomId })
+  }
+
+}
 
   return (
 
@@ -79,13 +101,14 @@ function VideoPlayer({ roomId, role }) {
             : "none"
       }}
     >
-
       {videoId ? (
 
         <YouTube
+          className="youtube-player"
           videoId={videoId}
           opts={opts}
           onReady={onReady}
+          onStateChange={onStateChange}
         />
 
       ) : (

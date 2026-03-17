@@ -5,6 +5,8 @@ import VideoPlayer from "../../Components/VideoPlayer/VideoPlayer"
 import Controls from "../../Components/Controls/Controls"
 import Participants from "../../Components/Participants/Participants"
 
+import "./Room.css"
+
 function Room({ roomId, username }) {
 
   const [participants, setParticipants] = useState([])
@@ -41,23 +43,81 @@ function Room({ roomId, username }) {
 
   }, [])
 
+  const leaveRoom = () => {
+
+  socket.disconnect()
+
+  window.location.reload()
+
+}
+
+
   return (
 
-    <div>
+    <div className="room">
 
-      <h2>Room: {roomId}</h2>
+      {/* HEADER */}
 
-      <VideoPlayer roomId={roomId} role={role} />
+      <div className="room-header">
+
+        <div className="logo">
+          watch<span>party</span>
+        </div>
+
+        <div className="room-code">
+          ROOM {roomId}
+        </div>
+
+        <div className="room-actions">
+
+          <span className="role-badge">
+            👑 {role}
+          </span>
+
+          <button className="leave-btn" onClick={leaveRoom}>
+            Leave
+          </button>
+
+        </div>
+
+      </div>
+
+
+      {/* MAIN AREA */}
+
+      <div className="room-main">
+
+        <div className="video-section">
+
+          <VideoPlayer roomId={roomId} role={role} />
+
+        </div>
+
+
+        <div className="sidebar">
+
+          <Participants
+            participants={participants}
+            role={role}
+            roomId={roomId}
+          />
+
+        </div>
+
+      </div>
+
+
+      {/* CONTROLS */}
 
       {(role === "host" || role === "moderator") &&
-        <Controls roomId={roomId} />
-      }
 
-      <Participants
-        participants={participants}
-        role={role}
-        roomId={roomId}
-      />
+        <div className="controls-bar">
+
+          <Controls roomId={roomId} />
+
+        </div>
+
+      }
 
     </div>
 
