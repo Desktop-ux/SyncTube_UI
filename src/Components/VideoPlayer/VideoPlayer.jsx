@@ -26,69 +26,101 @@ function VideoPlayer({ roomId, role }) {
 
   useEffect(() => {
 
-    socket.on("play", () => {
+    const handlePlay = () => {
       playerRef.current?.playVideo()
-    })
+    }
 
-    socket.on("pause", () => {
+    const handlePause = () => {
       playerRef.current?.pauseVideo()
-    })
+    }
 
-    socket.on("seek", ({ time }) => {
-      playerRef.current?.seekTo(time)
-    })
+    const handleSeek = ({ time }) => {
+      playerRef.current?.seekTo(time, true)
+    }
 
-    socket.on("change_video", ({ videoId }) => {
+    const handleChangeVideo = ({ videoId }) => {
 
       console.log("video received:", videoId)
 
       setVideoId(videoId)
 
-      if (playerRef.current) {
-        playerRef.current.loadVideoById(videoId)
-      }
+      setTimeout(() => {
+        playerRef.current?.loadVideoById(videoId)
+      }, 300)
 
-    })
+    }
 
-    socket.on("sync_state", ({ videoId, playState, currentTime }) => {
+    const handleSyncState = ({ videoId, playState, currentTime }) => {
+
+      if (!playerRef.current) return
 
       if (videoId) {
+
         setVideoId(videoId)
-        playerRef.current?.loadVideoById(videoId)
+
+        setTimeout(() => {
+          playerRef.current?.loadVideoById(videoId)
+        }, 300)
+
       }
 
-      if (currentTime) {
-        playerRef.current?.seekTo(currentTime)
-      }
+      setTimeout(() => {
 
-      if (playState === "play") {
-        playerRef.current?.playVideo()
-      }
+        if (currentTime !== undefined) {
+          playerRef.current?.seekTo(currentTime, true)
+        }
 
-      if (playState === "pause") {
-        playerRef.current?.pauseVideo()
-      }
+        if (playState === "play") {
+          playerRef.current?.playVideo()
+        }
 
-    })
+        if (playState === "pause") {
+          playerRef.current?.pauseVideo()
+        }
+
+      }, 700)
+
+    }
+
+    socket.on("play", handlePlay)
+    socket.on("pause", handlePause)
+    socket.on("seek", handleSeek)
+    socket.on("change_video", handleChangeVideo)
+    socket.on("sync_state", handleSyncState)
+
+    return () => {
+
+      socket.off("play", handlePlay)
+      socket.off("pause", handlePause)
+      socket.off("seek", handleSeek)
+      socket.off("change_video", handleChangeVideo)
+      socket.off("sync_state", handleSyncState)
+
+    }
 
   }, [])
+
   const onStateChange = (event) => {
 
-  if (!playerRef.current) return
+    if (!playerRef.current) return
 
-  const state = event.data
+    const state = event.data
 
-  if (role !== "host" && role !== "moderator") return
+    if (role !== "host" && role !== "moderator") return
 
-  if (state === 1) { // playing
-    socket.emit("play", { roomId })
+    if (state === 1) {
+
+      socket.emit("play", { roomId })
+
+    }
+
+    if (state === 2) {
+
+      socket.emit("pause", { roomId })
+
+    }
+
   }
-
-  if (state === 2) { // paused
-    socket.emit("pause", { roomId })
-  }
-
-}
 
   return (
 
@@ -101,6 +133,7 @@ function VideoPlayer({ roomId, role }) {
             : "none"
       }}
     >
+
       {videoId ? (
 
         <YouTube
@@ -120,6 +153,7 @@ function VideoPlayer({ roomId, role }) {
     </div>
 
   )
+
 }
 
 export default VideoPlayer
