@@ -9,6 +9,7 @@ margin-bottom:15px;
 display:flex;
 align-items:center;
 gap:8px;
+flex-wrap:wrap;
 }
 
 .count{
@@ -31,6 +32,7 @@ gap:10px;
 background:#11162a;
 padding:10px;
 border-radius:10px;
+flex-wrap:wrap;
 }
 
 .avatar{
@@ -42,14 +44,17 @@ align-items:center;
 justify-content:center;
 border-radius:50%;
 font-weight:600;
+flex-shrink:0;
 }
 
 .user-info{
 flex:1;
+min-width:0;
 }
 
 .username{
 font-size:14px;
+word-break:break-word;
 }
 
 .role{
@@ -60,6 +65,7 @@ opacity:.6;
 .actions{
 display:flex;
 gap:6px;
+flex-wrap:wrap;
 }
 
 .mod-btn{
@@ -69,6 +75,7 @@ color:white;
 padding:4px 8px;
 border-radius:6px;
 cursor:pointer;
+font-size:12px;
 }
 
 .remove-btn{
@@ -78,4 +85,34 @@ color:white;
 padding:4px 8px;
 border-radius:6px;
 cursor:pointer;
+font-size:12px;
+}
+
+@media (max-width:600px){
+
+.participant{
+padding:8px;
+gap:8px;
+}
+
+.avatar{
+width:30px;
+height:30px;
+font-size:12px;
+}
+
+.username{
+font-size:13px;
+}
+
+.role{
+font-size:11px;
+}
+
+.mod-btn,
+.remove-btn{
+padding:3px 6px;
+font-size:11px;
+}
+
 }

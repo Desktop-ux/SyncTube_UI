@@ -1,15 +1,18 @@
 .landing{
-height:100vh;
-background: radial-gradient(circle at top,#1c0810,#02040c);
+min-height:100vh;
+background:radial-gradient(circle at top,#1c0810,#02040c);
 display:flex;
 justify-content:center;
 align-items:center;
 color:white;
 font-family:system-ui;
+padding:20px;
 }
 
 .landing-center{
 text-align:center;
+width:100%;
+max-width:500px;
 }
 
 .logo{
@@ -33,12 +36,15 @@ opacity:.6;
 
 .card{
 margin-top:40px;
-width:380px;
+width:100%;
+max-width:380px;
 background:#0e1220;
 border-radius:14px;
 padding:30px;
 box-shadow:0 0 40px rgba(0,0,0,.6);
 text-align:left;
+margin-left:auto;
+margin-right:auto;
 }
 
 .card label{
@@ -74,4 +80,50 @@ transition:.2s;
 
 .join-btn:hover{
 background:#ff5252;
+}
+
+@media (max-width:768px){
+
+.logo{
+font-size:34px;
+}
+
+.title{
+font-size:34px;
+}
+
+.card{
+padding:24px;
+}
+
+}
+
+@media (max-width:480px){
+
+.logo{
+font-size:28px;
+}
+
+.title{
+font-size:28px;
+}
+
+.subtitle{
+font-size:14px;
+}
+
+.card{
+padding:20px;
+border-radius:12px;
+}
+
+.card input{
+padding:10px;
+}
+
+.join-btn{
+padding:12px;
+font-size:14px;
+}
+
 }
